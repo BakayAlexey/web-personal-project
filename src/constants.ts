@@ -1,0 +1,1 @@
+export const APP_TOKEN = 'WEB_PERSONAL_PROJECT';
