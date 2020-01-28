@@ -5,7 +5,8 @@ import { APP_TOKEN } from '../constants';
 export class AuthStore {
   @observable token: string = '';
 
-  constructor() {
+  constructor(rootStore: any) {
+    private this.rootStore = rootStore;
     this.readToken();
   }
 

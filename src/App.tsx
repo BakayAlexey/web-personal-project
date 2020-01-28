@@ -1,9 +1,20 @@
-import React from 'react';
+import React, { Component, Fragment } from 'react';
 
-export const App = () => {
-  return (
-    <div>
-      it is App!!!
-    </div>
-  );
-};
+export class App extends Component {
+  get menu() {
+    return (
+      <div>
+
+      </div>
+    );
+  }
+
+  render() {
+    return (
+      <Fragment>
+
+      </Fragment>
+    );
+  }
+}
+
