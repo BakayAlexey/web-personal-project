@@ -1,12 +1,14 @@
 import { observable } from 'mobx';
 import { getFromLocalStorage } from '../utils/storages';
 import { APP_TOKEN } from '../constants';
+import { RootStore } from '.';
 
 export class AuthStore {
   @observable token: string = '';
+  rootStore: RootStore;
 
-  constructor(rootStore: any) {
-    private this.rootStore = rootStore;
+  constructor(rootStore:RootStore) {
+    this.rootStore = rootStore;
     this.readToken();
   }
 

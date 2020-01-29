@@ -1,6 +1,7 @@
 import { AuthStore } from './auth';
 
-class RootStore {
+export class RootStore {
+    auth: AuthStore;
   constructor() {
     this.auth = new AuthStore(this);
   }
