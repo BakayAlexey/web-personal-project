@@ -5,6 +5,6 @@ import { stores } from './stores'
 import { App } from './App';
 
 ReactDom.render(
-  <Provider {...stores}>
+  <Provider stores={stores}>
     <App />
   </Provider>, document.querySelector('#root'));

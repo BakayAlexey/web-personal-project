@@ -1,9 +1,11 @@
 import { AuthStore } from './auth';
 
-class RootStore {
-  constructor(
-    public auth: AuthStore
-  ) {}
+export class RootStore {
+  auth: AuthStore;
+
+  constructor() {
+    this.auth = new AuthStore(this);
+  }
 }
 
-export const stores = new RootStore(AuthStore);
+export const stores = new RootStore();
