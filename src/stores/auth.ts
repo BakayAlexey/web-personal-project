@@ -6,7 +6,6 @@ export class AuthStore {
   @observable token: string = '';
 
   constructor(rootStore: any) {
-    private this.rootStore = rootStore;
     this.readToken();
   }
 
