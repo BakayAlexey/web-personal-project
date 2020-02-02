@@ -1,42 +1,25 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
-import { observer, inject } from 'mobx-react';
-import { stores } from '../../stores';
+import { StHeader, LoginLink, LogoutBtn } from './styledComponent';
+import { ACCESS_KEY, SECRET_KEY, REDIRECT_URL } from '../../../global-constants';
 
-const StHeader = styled.header`
-  padding: 5px 10px;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
-  text-align: center;
-`;
+interface HeaderProps {
+  isAuthenticated: boolean,
+}
 
-const LoginLink = styled.a`
-  display: inline-block;
-  padding: 10px 25px;
-  background-color: #00aa80;
-  border-radius: 3px;
-  font-size: 16px;
-  font-weight:bold;
-  color: #ffffff;
-  text-decoration: none;
-  transition: background-color .3s;
-  
-  &:hover {
-    background-color: #00c393;
-  }
-`;
+export class Header extends Component<HeaderProps>{
+  getLoginUrl = () => {
+    return `https://unsplash.com/oauth/authorize?client_id=${ACCESS_KEY}&redirect_uri=${REDIRECT_URL}&response_type=code&scope=public+read_user+write_user+read_photos+write_photos+write_likes+write_followers+read_collections+write_collections`;
+  };
 
-const LogoutBtn = styled.button`
-  
-`;
-
-
-@inject('stores')
-@observer
-export class Header extends Component {
   render() {
+    const { isAuthenticated } = this.props;
+
     return (
       <StHeader>
-        {stores.auth.token ? <LogoutBtn>Logout</LogoutBtn> : <LoginLink href="#">Login</LoginLink>}
+        {isAuthenticated ?
+          <LogoutBtn>Logout</LogoutBtn> :
+          <LoginLink href={this.getLoginUrl()}>Login</LoginLink>
+        }
       </StHeader>
     );
   };

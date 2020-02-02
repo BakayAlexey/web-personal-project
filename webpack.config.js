@@ -24,6 +24,9 @@ let conf = {
         extensions: ['.tsx', '.ts', '.js'],
     },
     devtool: 'source-map',
+    devServer: {
+        historyApiFallback: true
+    }
 };
 
 module.exports = conf;
