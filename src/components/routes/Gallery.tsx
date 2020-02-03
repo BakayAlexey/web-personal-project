@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
+import { GalleryList } from '../gallery';
 
 export class Gallery extends Component {
   render() {
     return (
-      <div>
-        Gallery
-      </div>
+      <Fragment>
+        <GalleryList />
+      </Fragment>
     );
   }
 }

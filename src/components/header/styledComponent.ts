@@ -23,5 +23,18 @@ export const LoginLink = styled.a`
 `;
 
 export const LogoutBtn = styled.button`
+  display: inline-block;
+  padding: 10px 25px;
+  background-color: #00aa80;
+  border: none;
+  border-radius: 3px;
+  font-size: 16px;
+  font-weight:bold;
+  color: #ffffff;
+  text-decoration: none;
+  transition: background-color .3s;
   
+  &:hover {
+    background-color: #00c393;
+  }
 `;

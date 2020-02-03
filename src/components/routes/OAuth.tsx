@@ -1,28 +1,33 @@
-import React, { Component } from 'react';
-import { RouteChildrenProps } from 'react-router-dom';
-import { ACCESS_KEY, SECRET_KEY, REDIRECT_URL, REDIRECT_URL_APP } from '../../../global-constants';
+import React, { Component, Fragment } from 'react';
+import { Redirect, RouteChildrenProps } from 'react-router-dom';
+import { inject, observer } from 'mobx-react';
+import { ACCESS_KEY, SECRET_KEY, REDIRECT_URL } from '../../../global-constants';
 import { stores } from '../../stores';
 
+@inject('stores')
+@observer
 export class OAuth extends Component<RouteChildrenProps> {
   async componentDidMount() {
-    if (!stores.auth.token) {
-      const { search } = this.props.location;
+    const { search } = this.props.location;
+    if (!stores.auth.token && search) {
       const code = search.split('=')[1];
-      console.log(code);
       const url = `https://unsplash.com/oauth/token?client_id=${ACCESS_KEY}&client_secret=${SECRET_KEY}&redirect_uri=${REDIRECT_URL}&code=${code}&grant_type=authorization_code`;
 
-      const response = await fetch(url, { method: 'POST' });
-      const res = await response.json();
-      console.log(res);
-      stores.auth.token = '123;'
+      try {
+        const response = await fetch(url, { method: 'POST' });
+        const res = await response.json();
+        stores.auth.setToken(res.access_token);
+      } catch (e) {
+        console.log(e);
+      }
     }
   }
 
   render() {
     return (
-      <div>
-        OAuth
-      </div>
+      <Fragment>
+        {stores.auth.token ? <Redirect to="/gallery" /> : <div>OAuth</div>}
+      </Fragment>
     );
   }
 }
