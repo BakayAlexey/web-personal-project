@@ -2,13 +2,18 @@ import React, { Component, Fragment } from 'react';
 import { Redirect, RouteChildrenProps } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { ACCESS_KEY, SECRET_KEY, REDIRECT_URL } from '../../../global-constants';
-import { stores } from '../../stores';
+import { RootStore } from '../../stores';
+
+interface OAuthProps extends RouteChildrenProps {
+  stores: RootStore,
+}
 
 @inject('stores')
 @observer
-export class OAuth extends Component<RouteChildrenProps> {
+export class OAuth extends Component<OAuthProps> {
   async componentDidMount() {
-    const { search } = this.props.location;
+    console.log(this.props);
+    const { stores, location: { search } } = this.props;
     if (!stores.auth.token && search) {
       const code = search.split('=')[1];
       const url = `https://unsplash.com/oauth/token?client_id=${ACCESS_KEY}&client_secret=${SECRET_KEY}&redirect_uri=${REDIRECT_URL}&code=${code}&grant_type=authorization_code`;
@@ -27,7 +32,7 @@ export class OAuth extends Component<RouteChildrenProps> {
   render() {
     return (
       <Fragment>
-        {stores.auth.token ? <Redirect to="/gallery" /> : <div>OAuth</div>}
+        {this.props.stores.auth.token ? <Redirect to="/gallery" /> : <div>OAuth</div>}
       </Fragment>
     );
   }
