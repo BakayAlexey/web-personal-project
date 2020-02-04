@@ -16,6 +16,7 @@ export class OAuth extends Component<RouteChildrenProps> {
       try {
         const response = await fetch(url, { method: 'POST' });
         const res = await response.json();
+        console.log(res);
         stores.auth.setToken(res.access_token);
       } catch (e) {
         console.log(e);
