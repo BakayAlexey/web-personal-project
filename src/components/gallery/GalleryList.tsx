@@ -1,25 +1,48 @@
 import React, { Component } from 'react';
-import { inject } from 'mobx-react';
-import { stores } from '../../stores';
+import { inject, observer } from 'mobx-react';
+import { RootStore } from '../../stores';
+import { GalleryItem } from './Gallery-Item';
+import { StGalleryList, BtnWrapper, Btn } from './styledComponent';
+
+interface GalleryListProps {
+  stores?: RootStore,
+}
 
 @inject('stores')
-export class GalleryList extends Component {
-  async componentDidMount() {
-    // const url = `https://api.unsplash.com/photos?page=2&per_page=20`;
-    // try {
-    //   const response = await fetch(url, { method: 'GET', headers: { Authorization: `Bearer ${stores.auth.token}` } });
-    //   const res = await response.json();
-    //   console.log(res);
-    // } catch (e) {
-    //   console.log(e);
-    // }
+@observer
+export class GalleryList extends Component<GalleryListProps> {
+  componentDidMount() {
+    const { loadEntities } = this.props.stores!.gallery;
+    loadEntities();
   }
 
+  btnHandler = () => {
+    const { loadEntities } = this.props.stores!.gallery;
+    loadEntities();
+  };
+
   render() {
+    const { entities } = this.props.stores!.gallery;
+    const galleryList = [];
+    for (let [_, item] of entities) {
+      galleryList.push(
+        <GalleryItem key={item.id} srcImg={item.urls.regular} />
+      );
+    }
+
+    if (entities.size === 0) {
+      return (
+        <div>No data</div>
+      );
+    }
+
     return (
-      <div>
-        GalleryList
-      </div>
+      <StGalleryList>
+        {galleryList}
+        <BtnWrapper>
+          <Btn onClick={this.btnHandler}>Load more...</Btn>
+        </BtnWrapper>
+      </StGalleryList>
     );
   }
 }

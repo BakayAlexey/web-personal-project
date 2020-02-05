@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
+import { StGalleryItem, StImg } from './styledComponent';
 
-export class GalleryItem extends Component {
+interface GalleryItemProps {
+  srcImg: string,
+}
+
+export class GalleryItem extends Component<GalleryItemProps> {
   render() {
     return (
-      <div>
-        GalleryItem
-      </div>
+      <StGalleryItem>
+        <StImg src={this.props.srcImg} alt="img" />
+      </StGalleryItem>
     );
   }
 }

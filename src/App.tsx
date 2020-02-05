@@ -1,16 +1,21 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component, Fragment, ReactNode } from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
-import { stores } from './stores'
+import { RootStore } from './stores';
 import { ProtectedRoute, ProtectedRouteProps } from './components/common';
 import { Header } from './components/header';
 import { Home, Login, OAuth, Gallery, Error } from './components/routes';
 
+interface AppProps {
+  stores?: RootStore,
+}
+
 @inject('stores')
 @observer
-export class App extends Component {
+export class App extends Component<AppProps> {
   render() {
-    const isAuthenticated:boolean = !!stores.auth.token;
+    const { stores } = this.props;
+    const isAuthenticated:boolean = !!stores!.auth.token;
 
     const defaultProtectedRouteProps: ProtectedRouteProps = {
       isAuthenticated,
@@ -19,7 +24,7 @@ export class App extends Component {
 
     return (
       <Fragment>
-        <Header isAuthenticated={isAuthenticated} />
+        <Header isAuthenticated={isAuthenticated} stores={stores!} />
         <BrowserRouter>
           <Switch>
             <Route path="/" component={Home} exact />

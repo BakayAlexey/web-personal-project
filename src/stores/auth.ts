@@ -1,31 +1,35 @@
-import { action, observable } from 'mobx';
+import { action, computed, observable } from 'mobx';
 import { getFromLocalStorage, setToLocalStorage, removeFromLocalStorage } from '../utils/storages';
 import { APP_TOKEN } from '../constants';
-import { RootStore } from './index';
 
 export class AuthStore {
-  @observable token: string = '';
+  @observable _token: string = '';
 
-  constructor(rootStore: RootStore) {
+  constructor() {
     this.readToken();
   }
 
   readToken = () => {
     const token = getFromLocalStorage(APP_TOKEN);
     if (token) {
-      this.token = token;
+      this._token = token;
     }
   };
 
+  @computed
+  get token() {
+    return this._token;
+  }
+
   @action
   setToken = (token: string) => {
-    this.token = token;
+    this._token = token;
     setToLocalStorage(APP_TOKEN, token);
   };
 
   @action
   removeToken = () => {
-    this.token = '';
+    this._token = '';
     removeFromLocalStorage(APP_TOKEN);
   };
 }

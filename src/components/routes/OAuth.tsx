@@ -12,7 +12,6 @@ interface OAuthProps extends RouteChildrenProps {
 @observer
 export class OAuth extends Component<OAuthProps> {
   async componentDidMount() {
-    console.log(this.props);
     const { stores, location: { search } } = this.props;
     if (!stores.auth.token && search) {
       const code = search.split('=')[1];
