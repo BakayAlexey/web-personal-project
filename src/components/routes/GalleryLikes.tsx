@@ -10,21 +10,21 @@ interface GalleryProps {
 
 @inject('stores')
 @observer
-export class Gallery extends Component<GalleryProps> {
+export class GalleryLikes extends Component<GalleryProps> {
   componentDidMount() {
-    const { loadEntities, isLoaded } = this.props.stores!.gallery;
+    const { loadEntities, isLoaded } = this.props.stores!.galleryLikes;
     if (!isLoaded) {
       loadEntities();
     }
   }
 
   btnHandler = () => {
-    const {loadEntities} = this.props.stores!.gallery;
+    const {loadEntities} = this.props.stores!.galleryLikes;
     loadEntities();
   };
 
   render() {
-    const { entities } = this.props.stores!.gallery;
+    const { entities } = this.props.stores!.galleryLikes;
     const galleryList = Object.values(entities);
 
     if (galleryList.length === 0) {

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StHeader, LoginLink, LogoutBtn } from './styledComponent';
 import { ACCESS_KEY, REDIRECT_URL } from '../../../global-constants';
 import { RootStore } from '../../stores';
+import { Link } from 'react-router-dom';
 
 interface HeaderProps {
   isAuthenticated: boolean,
@@ -21,12 +22,19 @@ export class Header extends Component<HeaderProps>{
   render() {
     const { isAuthenticated } = this.props;
 
+    if (!isAuthenticated) {
+      return (
+        <StHeader>
+          <LoginLink href={this.getLoginUrl()}>Login</LoginLink>
+        </StHeader>
+      );
+    }
+
     return (
       <StHeader>
-        {isAuthenticated ?
-          <LogoutBtn onClick={this.logoutHandler}>Logout</LogoutBtn> :
-          <LoginLink href={this.getLoginUrl()}>Login</LoginLink>
-        }
+        <Link to="/gallery">Gallery</Link>
+        <Link to="/galleryLikes">Liked</Link>
+        <LogoutBtn onClick={this.logoutHandler}>Logout</LogoutBtn>
       </StHeader>
     );
   };

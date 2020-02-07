@@ -1,10 +1,10 @@
-import React, { Component, Fragment, ReactNode } from 'react';
+import React, { Component, Fragment } from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import { RootStore } from './stores';
 import { ProtectedRoute, ProtectedRouteProps } from './components/common';
 import { Header } from './components/header';
-import { Home, Login, OAuth, Gallery, Error } from './components/routes';
+import { Home, Login, OAuth, Gallery, GalleryLikes, Error } from './components/routes';
 
 interface AppProps {
   stores?: RootStore,
@@ -24,8 +24,8 @@ export class App extends Component<AppProps> {
 
     return (
       <Fragment>
-        <Header isAuthenticated={isAuthenticated} stores={stores!} />
         <BrowserRouter>
+          <Header isAuthenticated={isAuthenticated} stores={stores!} />
           <Switch>
             <Route path="/" component={Home} exact />
             <Route path="/login" component={Login} />
@@ -39,6 +39,11 @@ export class App extends Component<AppProps> {
               {...defaultProtectedRouteProps}
               path="/gallery"
               component={Gallery}
+            />
+            <ProtectedRoute
+              {...defaultProtectedRouteProps}
+              path="/galleryLikes"
+              component={GalleryLikes}
             />
             <Route path="/404" component={Error} />
             <Redirect to="/404" />

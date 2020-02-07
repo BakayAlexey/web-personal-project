@@ -6,13 +6,14 @@ export interface EntitiesProps {
   // id: Image,
 }
 
-export class Gallery {
+export class GalleryLikes {
   @observable _entities: EntitiesProps | {} = {};
   @observable _loading: boolean;
   @observable _loaded: boolean;
   @observable _error: string | null;
   _loadedPage: number;
   _rootStore: RootStore;
+  _username: string;
 
   constructor(rootStore: RootStore) {
     this._loadedPage = 0;
@@ -20,6 +21,7 @@ export class Gallery {
     this._loaded = false;
     this._error = null;
     this._rootStore = rootStore;
+    this._username = '';
   }
 
   @computed
@@ -42,13 +44,19 @@ export class Gallery {
     this._loading = true;
 
     this._loadedPage += 1;
-    const url = `https://api.unsplash.com/photos?page=${this._loadedPage}&per_page=10`;
-    try {
-      const response = await fetch(url, { method: 'GET' });
-      const res = await response.json();
-      console.log(res);
-      if (res.errors) throw new Error(res.errors);
 
+    // const url = `https://api.unsplash.com/photos?page=${this._loadedPage}&per_page=10`;
+    try {
+      // @ts-ignore
+      if (!this._username) {
+        const responseUser = await fetch('https://api.unsplash.com/me', { method: 'GET', headers: { Authorization: `Bearer ${this._rootStore.auth.token}` } });
+        const user = await responseUser.json();
+        this._username = user.username;
+      }
+
+      const url = `https://api.unsplash.com/users/${this._username}/likes?${this._loadedPage}&per_page=10`;
+      const response = await fetch(url, { method: 'GET', headers: { Authorization: `Bearer ${this._rootStore.auth.token}` } });
+      const res = await response.json();
       const newEntities = res.reduce((entities: EntitiesProps, item: Image) => {
         // @ts-ignore
         entities[item.id] = item;
@@ -66,4 +74,11 @@ export class Gallery {
       this._loaded = true;
     }
   };
+
+  @action
+  likePhoto = async (id: string) => {
+    const url = `https://api.unsplash.com/photos/${id}/like`;
+    const response = await fetch(url, { method: 'POST', headers: { Authorization: `Bearer ${this._rootStore.auth.token}` } });
+    const res = await response.json();
+  }
 }
