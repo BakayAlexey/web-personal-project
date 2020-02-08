@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 export const StGalleryList = styled.div`
   display: flex;
@@ -21,7 +22,12 @@ export const GalleryItemContent = styled.div`
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, .2);
 `;
 
-export const StImg = styled.img`
+export const ImgWrap = styled(Link)`
+  display: block;
+  width: 100%;
+`;
+
+export const Img = styled.img`
   display: block;
   width: 100%;
 `;

@@ -4,7 +4,7 @@ import { observer, inject } from 'mobx-react';
 import { RootStore } from './stores';
 import { ProtectedRoute, ProtectedRouteProps } from './components/common';
 import { Header } from './components/header';
-import { Home, Login, OAuth, Gallery, GalleryLikes, Error } from './components/routes';
+import { Home, Login, OAuth, Gallery, GalleryLikes, Error, Photo } from './components/routes';
 
 interface AppProps {
   stores?: RootStore,
@@ -33,7 +33,7 @@ export class App extends Component<AppProps> {
             <ProtectedRoute
               {...defaultProtectedRouteProps}
               path="/gallery/:id"
-              component={Gallery}
+              component={Photo}
             />
             <ProtectedRoute
               {...defaultProtectedRouteProps}

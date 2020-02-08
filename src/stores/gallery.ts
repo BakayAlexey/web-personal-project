@@ -44,9 +44,8 @@ export class Gallery {
     this._loadedPage += 1;
     const url = `https://api.unsplash.com/photos?page=${this._loadedPage}&per_page=10`;
     try {
-      const response = await fetch(url, { method: 'GET' });
+      const response = await fetch(url, { method: 'GET', headers: { Authorization: `Bearer ${this._rootStore.auth.token}` } });
       const res = await response.json();
-      console.log(res);
       if (res.errors) throw new Error(res.errors);
 
       const newEntities = res.reduce((entities: EntitiesProps, item: Image) => {
@@ -66,4 +65,32 @@ export class Gallery {
       this._loaded = true;
     }
   };
+
+  // @action
+  // getEntityById = async (id: string) => {
+    // @ts-ignore
+    // if (!this._entities[id]) {
+    //   await this.loadById(id);
+    // }
+
+    // @ts-ignore
+    // return this._entities[id];
+  // };
+
+  // loadById = async (id: string) => {
+  //   this._loading = true;
+  //
+  //   const url = `https://api.unsplash.com/photos/${id}`;
+  //   try {
+  //     const response = await fetch(url, { method: 'GET', headers: { Authorization: `Bearer ${this._rootStore.auth.token}` } });
+  //     const res = await response.json();
+  //     // @ts-ignore
+  //     this._entities[res.id] = res;
+  //   } catch (e) {
+  //     console.log(e);
+  //     this._error = e;
+  //   }
+  //
+  //   this._loading = false;
+  // };
 }

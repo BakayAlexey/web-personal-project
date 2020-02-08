@@ -1,6 +1,7 @@
 import { action, computed, observable } from 'mobx';
 import { Image } from '../types';
 import { RootStore } from './index';
+import { act } from 'react-dom/test-utils';
 
 export interface EntitiesProps {
   // id: Image,
@@ -45,7 +46,6 @@ export class GalleryLikes {
 
     this._loadedPage += 1;
 
-    // const url = `https://api.unsplash.com/photos?page=${this._loadedPage}&per_page=10`;
     try {
       // @ts-ignore
       if (!this._username) {
@@ -77,8 +77,48 @@ export class GalleryLikes {
 
   @action
   likePhoto = async (id: string) => {
-    const url = `https://api.unsplash.com/photos/${id}/like`;
-    const response = await fetch(url, { method: 'POST', headers: { Authorization: `Bearer ${this._rootStore.auth.token}` } });
-    const res = await response.json();
-  }
+    if (!this._loaded) {
+      await this.loadEntities();
+    }
+
+    // @ts-ignore
+    if (this._entities[id]) {
+      try {
+        const url = `https://api.unsplash.com/photos/${id}/like`;
+        const response = await fetch(url, { method: 'DELETE', headers: { Authorization: `Bearer ${this._rootStore.auth.token}` } });
+        const res = await response.json();
+        // @ts-ignore
+        this._entities[id] = undefined;
+
+        // @ts-ignore
+        if (this._rootStore.gallery._entities[id]) {
+          // @ts-ignore
+          this._rootStore.gallery._entities[id].liked_by_user = false;
+        }
+      } catch (e) {
+        console.log(e);
+        this._error = e;
+      }
+    }
+    // @ts-ignore
+    else if (!this._entities[id]) {
+      try {
+        const url = `https://api.unsplash.com/photos/${id}/like`;
+        const response = await fetch(url, { method: 'POST', headers: { Authorization: `Bearer ${this._rootStore.auth.token}` } });
+        const res = await response.json();
+
+        // @ts-ignore
+        this._entities[id] = res.photo;
+
+        // @ts-ignore
+        if (this._rootStore.gallery.entities[id]) {
+          // @ts-ignore
+          this._rootStore.gallery.entities[id].liked_by_user = true;
+        }
+      } catch (e) {
+        console.log(e);
+        this._error = e;
+      }
+    }
+  };
 }
