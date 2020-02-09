@@ -25,7 +25,7 @@ let conf = {
     },
     devtool: 'source-map',
     devServer: {
-        historyApiFallback: true
+        historyApiFallback: true,
     }
 };
 

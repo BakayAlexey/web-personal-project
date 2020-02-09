@@ -88,7 +88,7 @@ export class GalleryLikes {
         const response = await fetch(url, { method: 'DELETE', headers: { Authorization: `Bearer ${this._rootStore.auth.token}` } });
         const res = await response.json();
         // @ts-ignore
-        this._entities[id] = undefined;
+        delete this._entities[id];
 
         // @ts-ignore
         if (this._rootStore.gallery._entities[id]) {

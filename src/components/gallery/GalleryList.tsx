@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { GalleryItem } from './Gallery-Item';
+import { GalleryItem } from './GalleryItem';
 import { StGalleryList } from './styledComponent';
 import { Image } from '../../types';
 import { RootStore } from '../../stores';

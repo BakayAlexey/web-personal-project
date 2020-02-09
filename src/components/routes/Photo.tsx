@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { useParams, RouteChildrenProps } from 'react-router-dom';
+import { RouteChildrenProps } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { RootStore } from '../../stores';
 
@@ -21,13 +21,10 @@ interface PhotoProps extends RouteChildrenProps {
 @observer
 export class Photo extends Component<PhotoProps> {
   componentDidMount() {
-    // const { id } = useParams();
-    // @ts-ignore
-    // this.props.stores!.gallery.getEntityById(id);
+
   }
 
   render() {
-    // const { id } = useParams();
     // @ts-ignore
     const { id } = this.props.match?.params;
 

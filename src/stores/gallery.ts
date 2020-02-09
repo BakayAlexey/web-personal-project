@@ -66,31 +66,32 @@ export class Gallery {
     }
   };
 
-  // @action
-  // getEntityById = async (id: string) => {
+  @action
+  getEntityById = async (id: string) => {
     // @ts-ignore
-    // if (!this._entities[id]) {
-    //   await this.loadById(id);
-    // }
+    if (!this._entities[id]) {
+      await this.loadById(id);
+    }
 
     // @ts-ignore
-    // return this._entities[id];
-  // };
+    return this._entities[id];
+  };
 
-  // loadById = async (id: string) => {
-  //   this._loading = true;
-  //
-  //   const url = `https://api.unsplash.com/photos/${id}`;
-  //   try {
-  //     const response = await fetch(url, { method: 'GET', headers: { Authorization: `Bearer ${this._rootStore.auth.token}` } });
-  //     const res = await response.json();
-  //     // @ts-ignore
-  //     this._entities[res.id] = res;
-  //   } catch (e) {
-  //     console.log(e);
-  //     this._error = e;
-  //   }
-  //
-  //   this._loading = false;
-  // };
+  loadById = async (id: string) => {
+    this._loading = true;
+
+    const url = `https://api.unsplash.com/photos/${id}`;
+    try {
+      const response = await fetch(url, { method: 'GET', headers: { Authorization: `Bearer ${this._rootStore.auth.token}` } });
+      const res = await response.json();
+      console.log(res);
+      // @ts-ignore
+      this._entities[res.id] = res;
+    } catch (e) {
+      console.log(e);
+      this._error = e;
+    }
+
+    this._loading = false;
+  };
 }
