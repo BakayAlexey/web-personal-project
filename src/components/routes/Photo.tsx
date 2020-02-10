@@ -21,7 +21,11 @@ interface PhotoProps extends RouteChildrenProps {
 @observer
 export class Photo extends Component<PhotoProps> {
   componentDidMount() {
-
+    // @ts-ignore
+    const { id } = this.props.match?.params;
+    if (!this.props.stores!.gallery._entities[id]) {
+      this.props.stores!.gallery.getEntityById(id);
+    }
   }
 
   render() {

@@ -3,11 +3,11 @@ import { Image } from '../types';
 import { RootStore } from './index';
 
 export interface EntitiesProps {
-  // id: Image,
+  [key: string]: Image
 }
 
 export class Gallery {
-  @observable _entities: EntitiesProps | {} = {};
+  @observable _entities: EntitiesProps =  {};
   @observable _loading: boolean;
   @observable _loaded: boolean;
   @observable _error: string | null;
@@ -49,7 +49,6 @@ export class Gallery {
       if (res.errors) throw new Error(res.errors);
 
       const newEntities = res.reduce((entities: EntitiesProps, item: Image) => {
-        // @ts-ignore
         entities[item.id] = item;
         return entities;
       }, {});
@@ -68,13 +67,10 @@ export class Gallery {
 
   @action
   getEntityById = async (id: string) => {
-    // @ts-ignore
     if (!this._entities[id]) {
-      await this.loadById(id);
-    }
-
-    // @ts-ignore
-    return this._entities[id];
+        await this.loadById(id);
+      }
+      return this._entities[id];
   };
 
   loadById = async (id: string) => {
@@ -84,8 +80,6 @@ export class Gallery {
     try {
       const response = await fetch(url, { method: 'GET', headers: { Authorization: `Bearer ${this._rootStore.auth.token}` } });
       const res = await response.json();
-      console.log(res);
-      // @ts-ignore
       this._entities[res.id] = res;
     } catch (e) {
       console.log(e);

@@ -33,11 +33,13 @@ export class App extends Component<AppProps> {
             <ProtectedRoute
               {...defaultProtectedRouteProps}
               path="/gallery/:id"
+              exact={true}
               component={Photo}
             />
             <ProtectedRoute
               {...defaultProtectedRouteProps}
               path="/gallery"
+              exact={true}
               component={Gallery}
             />
             <ProtectedRoute
