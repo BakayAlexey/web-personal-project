@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { RouteChildrenProps } from 'react-router-dom';
+import { RouteChildrenProps, RouteComponentProps } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { RootStore } from '../../stores';
 
@@ -13,7 +13,7 @@ const Img = styled.img`
   margin-top: 30px;
 `;
 
-interface PhotoProps extends RouteChildrenProps {
+interface PhotoProps extends RouteChildrenProps<any> {
   stores?: RootStore,
 }
 
@@ -21,23 +21,19 @@ interface PhotoProps extends RouteChildrenProps {
 @observer
 export class Photo extends Component<PhotoProps> {
   componentDidMount() {
-    // @ts-ignore
-    const { id } = this.props.match?.params;
+    const { id } = this.props.match!.params;
     if (!this.props.stores!.gallery._entities[id]) {
       this.props.stores!.gallery.getEntityById(id);
     }
   }
 
   render() {
-    // @ts-ignore
-    const { id } = this.props.match?.params;
+    const { id } = this.props.match!.params;
 
-    // @ts-ignore
     if (!this.props.stores!.gallery._entities[id]) {
       return (<div>No data!</div>)
     }
 
-    // @ts-ignore
     const src = this.props.stores!.gallery._entities[id].urls.regular;
 
     return (

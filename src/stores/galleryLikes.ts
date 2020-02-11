@@ -1,14 +1,13 @@
 import { action, computed, observable } from 'mobx';
 import { Image } from '../types';
 import { RootStore } from './index';
-import { act } from 'react-dom/test-utils';
 
 export interface EntitiesProps {
-  // id: Image,
+  [key: string]: Image,
 }
 
 export class GalleryLikes {
-  @observable _entities: EntitiesProps | {} = {};
+  @observable _entities: EntitiesProps | null = null;
   @observable _loading: boolean;
   @observable _loaded: boolean;
   @observable _error: string | null;
@@ -47,7 +46,6 @@ export class GalleryLikes {
     this._loadedPage += 1;
 
     try {
-      // @ts-ignore
       if (!this._username) {
         const responseUser = await fetch('https://api.unsplash.com/me', { method: 'GET', headers: { Authorization: `Bearer ${this._rootStore.auth.token}` } });
         const user = await responseUser.json();
@@ -58,7 +56,6 @@ export class GalleryLikes {
       const response = await fetch(url, { method: 'GET', headers: { Authorization: `Bearer ${this._rootStore.auth.token}` } });
       const res = await response.json();
       const newEntities = res.reduce((entities: EntitiesProps, item: Image) => {
-        // @ts-ignore
         entities[item.id] = item;
         return entities;
       }, {});
@@ -81,38 +78,29 @@ export class GalleryLikes {
       await this.loadEntities();
     }
 
-    // @ts-ignore
-    if (this._entities[id]) {
+    if (this._entities && this._entities[id]) {
       try {
         const url = `https://api.unsplash.com/photos/${id}/like`;
         const response = await fetch(url, { method: 'DELETE', headers: { Authorization: `Bearer ${this._rootStore.auth.token}` } });
         const res = await response.json();
-        // @ts-ignore
         delete this._entities[id];
 
-        // @ts-ignore
         if (this._rootStore.gallery._entities[id]) {
-          // @ts-ignore
           this._rootStore.gallery._entities[id].liked_by_user = false;
         }
       } catch (e) {
         console.log(e);
         this._error = e;
       }
-    }
-    // @ts-ignore
-    else if (!this._entities[id]) {
+    } else if (this._entities && !this._entities[id]) {
       try {
         const url = `https://api.unsplash.com/photos/${id}/like`;
         const response = await fetch(url, { method: 'POST', headers: { Authorization: `Bearer ${this._rootStore.auth.token}` } });
         const res = await response.json();
 
-        // @ts-ignore
         this._entities[id] = res.photo;
 
-        // @ts-ignore
         if (this._rootStore.gallery.entities[id]) {
-          // @ts-ignore
           this._rootStore.gallery.entities[id].liked_by_user = true;
         }
       } catch (e) {

@@ -25,23 +25,24 @@ export class GalleryLikes extends Component<GalleryProps> {
 
   render() {
     const { entities } = this.props.stores!.galleryLikes;
-    const galleryList = Object.values(entities);
 
-    if (galleryList.length === 0) {
+    const galleryList = entities && Object.values(entities);
+
+    if (galleryList && galleryList.length > 0) {
       return (
-        <div>No data</div>
+        <Fragment>
+          <GalleryList list={galleryList} />
+          <BtnWrapper>
+            <Btn onClick={this.btnHandler}>
+              Load more ...
+            </Btn>
+          </BtnWrapper>
+        </Fragment>
       );
     }
 
     return (
-      <Fragment>
-        <GalleryList list={galleryList} />
-        <BtnWrapper>
-          <Btn onClick={this.btnHandler}>
-            Load more ...
-          </Btn>
-        </BtnWrapper>
-      </Fragment>
+      <div>No data</div>
     );
   }
 }
